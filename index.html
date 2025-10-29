@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora CDT - Ahorro Mensual + CDT Anual</title>
+    <title>Simulador profesional de inversiones</title>
     <style>
         * {
             margin: 0;
@@ -550,8 +550,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Calculadora CDT - Ahorro Mensual + CDT Anual</h1>
-            <p class="text-muted-cab">Simulador profesional de inversiones</p>
+            <h1>Simulador profesional de inversiones</h1>
+            <p class="text-muted-cab">Calculadora CDT - Ahorro Mensual + CDT Anual</p>
         </div>
         
         <div class="content">
@@ -599,19 +599,23 @@
                 <h2>RESUMEN GENERAL</h2>
                 <div class="summary-row">
                     <span class="summary-label">Inversión Mensual:</span>
-                    <span class="summary-value" id="resumenMensual">$2.000.000,00</span>
+                    <span class="summary-value" id="resumenMensual">0,00</span>
                 </div>
                 <div class="summary-row">
                     <span class="summary-label">Ahorro Anual (con rendimientos mensuales):</span>
-                    <span class="summary-value" id="resumenAhorroAnual">$40.990.593,15</span>
+                    <span class="summary-value" id="resumenAhorroAnual">0,00</span>
                 </div>
                 <div class="summary-row">
                     <span class="summary-label">Rendimiento CDT Neto (después de retención):</span>
-                    <span class="summary-value" id="resumenRendimientoNeto">9,60%</span>
+                    <span class="summary-value" id="resumenRendimientoNeto">0,00%</span>
                 </div>
                 <div class="summary-row">
-                    <span class="summary-label">Total Final después de <span id="aniosTexto">30</span> años:</span>
-                    <span class="summary-value highlight" id="resumenTotalFinal">$21.543.385.580,48</span>
+                    <span class="summary-label">Total semanas cotizadas:</span>
+                    <span class="summary-value" id="resumenSemanasCotizadas">0 semanas</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Total Final después de <span id="aniosTexto">0</span> años:</span>
+                    <span class="summary-value highlight" id="resumenTotalFinal">0,00</span>
                 </div>
             </div>
 
@@ -686,7 +690,7 @@
             const apyAnual = parseFloat(document.getElementById('apyMensual').value) || 0;
             const tasaCDT = parseFloat(document.getElementById('tasaCDT').value) || 0;
             const retencionPorcentaje = parseFloat(document.getElementById('retencion').value) || 0;
-            const numeroAnios = parseInt(document.getElementById('numeroAnios').value) || 1;
+            const numeroAnios = parseInt(document.getElementById('numeroAnios').value) || 0;
             
             // Calcular ahorro mensual
             const ahorroAnual = calcularAhorroMensual(inversionMensual, apyAnual);
@@ -779,10 +783,12 @@
         
         function actualizarResumen(inversionMensual, ahorroAnual, tasaCDT, retencionPorcentaje, numeroAnios, totalFinal) {
             const rendimientoNeto = tasaCDT - (tasaCDT * retencionPorcentaje / 100);
+            const semanasCotizadas = numeroAnios * 52;
             
             document.getElementById('resumenMensual').innerHTML = '<strong>' + formatearNumero(inversionMensual) + '</strong>';
             document.getElementById('resumenAhorroAnual').innerHTML = '<strong>' + formatearNumero(ahorroAnual) + '</strong>';
             document.getElementById('resumenRendimientoNeto').innerHTML = '<strong>' + formatearNumero(rendimientoNeto) + '%</strong>';
+            document.getElementById('resumenSemanasCotizadas').innerHTML = '<strong>' + semanasCotizadas + ' semanas</strong>';
             document.getElementById('aniosTexto').textContent = numeroAnios;
             document.getElementById('resumenTotalFinal').innerHTML = '<strong>' + formatearNumero(totalFinal) + '</strong>';
         }
