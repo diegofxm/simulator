@@ -498,6 +498,118 @@
             }
         }
         
+        /* Mensajes de error */
+        .error-container {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .error-container.show {
+            display: block;
+        }
+        
+        .error-message {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin: 0.25rem 0;
+        }
+        
+        .error-title {
+            color: #dc2626;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Botones adicionales */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #4338ca;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+        }
+        
+        /* Gráfico */
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        
+        #chartCanvas {
+            max-height: 400px;
+        }
+        
+        
+        /* Loading spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         /* Footer */
         .footer {
             background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
@@ -560,12 +672,12 @@
                     <h2>Parámetros de Ahorro Mensual</h2>
                     <table>
                         <tr>
-                            <td>Inversión Mensual:</td>
-                            <td><input type="number" id="inversionMensual" value="" step="0.01" oninput="calcular()" placeholder="Ej: 250000"></td>
+                            <td><label for="inversionMensual">Inversión Mensual:</label></td>
+                            <td><input type="number" id="inversionMensual" name="inversionMensual" value="" step="0.01" oninput="calcularDebounced()" placeholder="Ej: 250000" aria-describedby="inversionMensual-help" min="0"></td>
                         </tr>
                         <tr>
-                            <td>APY % (Rendimiento Anual):</td>
-                            <td><input type="number" id="apyMensual" value="" step="0.01" oninput="calcular()" placeholder="Ej: 8"></td>
+                            <td><label for="apyMensual">APY % (Rendimiento Anual):</label></td>
+                            <td><input type="number" id="apyMensual" name="apyMensual" value="" step="0.01" oninput="calcularDebounced()" placeholder="Ej: 8" aria-describedby="apyMensual-help" min="0" max="50"></td>
                         </tr>
                     </table>
                 </div>
@@ -574,24 +686,42 @@
                     <h2>Parámetros de CDT Anual</h2>
                     <table>
                         <tr>
-                            <td>Tasa CDT % Anual:</td>
-                            <td><input type="number" id="tasaCDT" value="" step="0.01" oninput="calcular()" placeholder="Ej: 10,7"></td>
+                            <td><label for="tasaCDT">Tasa CDT % Anual:</label></td>
+                            <td><input type="number" id="tasaCDT" name="tasaCDT" value="" step="0.01" oninput="calcularDebounced()" placeholder="Ej: 10,7" aria-describedby="tasaCDT-help" min="0" max="50"></td>
                         </tr>
                         <tr>
-                            <td>Retención en la Fuente %:</td>
-                            <td><input type="number" id="retencion" value="" step="0.01" oninput="calcular()" placeholder="Ej: 4"></td>
+                            <td><label for="retencion">Retención en la Fuente %:</label></td>
+                            <td><input type="number" id="retencion" name="retencion" value="" step="0.01" oninput="calcularDebounced()" placeholder="Ej: 4" aria-describedby="retencion-help" min="0" max="100"></td>
                         </tr>
                         <tr>
-                            <td><strong>Número de Años de Proyección:</strong></td>
-                            <td><input type="number" id="numeroAnios" value="" min="1" max="100" oninput="calcular()" placeholder="Ej: 40"></td>
+                            <td><label for="numeroAnios"><strong>Número de Años de Proyección:</strong></label></td>
+                            <td><input type="number" id="numeroAnios" name="numeroAnios" value="" min="1" max="100" oninput="calcularDebounced()" placeholder="Ej: 40" aria-describedby="numeroAnios-help"></td>
                         </tr>
                     </table>
                 </div>
             </div>
 
-            <div class="btn-container">
-                <button onclick="limpiarCampos()" class="btn-limpiar">
+            <!-- Contenedor de errores -->
+            <div id="errorContainer" class="error-container">
+                <div class="error-title">⚠️ Errores de validación:</div>
+                <div id="errorMessages"></div>
+            </div>
+            
+            <!-- Loading spinner -->
+            <div id="loadingSpinner" class="loading">
+                <div class="spinner"></div>
+                <p>Calculando proyección...</p>
+            </div>
+            
+            <div class="btn-group">
+                <button onclick="limpiarCampos()" class="btn btn-secondary">
                     🗑️ Limpiar Campos
+                </button>
+                <button onclick="exportarPDF()" class="btn btn-primary">
+                    📄 Exportar PDF
+                </button>
+                <button onclick="exportarExcel()" class="btn btn-success">
+                    📈 Exportar Excel
                 </button>
             </div>
 
@@ -618,6 +748,13 @@
                     <span class="summary-value highlight" id="resumenTotalFinal">0,00</span>
                 </div>
             </div>
+
+            <!-- Gráfico de crecimiento -->
+            <div class="chart-container">
+                <h2>📊 Gráfico de Crecimiento de la Inversión</h2>
+                <canvas id="chartCanvas" width="400" height="200"></canvas>
+            </div>
+
 
             <h2>TABLA 1: Ahorro Mensual con Rendimientos (Patrón Anual)</h2>
             <p class="text-muted"><em>Cada año se repite este patrón: empiezas con 0 y terminas con el ahorro anual.</em></p>
@@ -674,15 +811,85 @@
         </footer>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
                       'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        
+        let chart = null;
+        let currentScenarioData = null;
         
         function formatearNumero(numero) {
             return new Intl.NumberFormat('es-CO', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             }).format(numero);
+        }
+        
+        // Debounce function para optimizar cálculos
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Función de validación
+        function validarEntradas(inversionMensual, apyAnual, tasaCDT, retencion, numeroAnios) {
+            const errores = [];
+            
+            if (inversionMensual < 0) {
+                errores.push("La inversión mensual no puede ser negativa");
+            }
+            if (inversionMensual > 100000000) {
+                errores.push("La inversión mensual no puede superar $100,000,000");
+            }
+            if (apyAnual < 0 || apyAnual > 50) {
+                errores.push("El APY debe estar entre 0% y 50%");
+            }
+            if (tasaCDT < 0 || tasaCDT > 50) {
+                errores.push("La tasa CDT debe estar entre 0% y 50%");
+            }
+            if (retencion < 0 || retencion > 100) {
+                errores.push("La retención debe estar entre 0% y 100%");
+            }
+            if (numeroAnios < 0 || numeroAnios > 100) {
+                errores.push("Los años deben estar entre 0 y 100");
+            }
+            if (tasaCDT > 0 && retencion > tasaCDT) {
+                errores.push("La retención no puede ser mayor que la tasa CDT");
+            }
+            
+            return errores;
+        }
+        
+        // Mostrar errores
+        function mostrarErrores(errores) {
+            const container = document.getElementById('errorContainer');
+            const messagesDiv = document.getElementById('errorMessages');
+            
+            if (errores.length > 0) {
+                messagesDiv.innerHTML = errores.map(error => 
+                    `<div class="error-message">• ${error}</div>`
+                ).join('');
+                container.classList.add('show');
+                return false;
+            } else {
+                container.classList.remove('show');
+                return true;
+            }
+        }
+        
+        // Loading spinner
+        function mostrarLoading(show) {
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
         }
 
         function calcular() {
@@ -692,15 +899,51 @@
             const retencionPorcentaje = parseFloat(document.getElementById('retencion').value) || 0;
             const numeroAnios = parseInt(document.getElementById('numeroAnios').value) || 0;
             
-            // Calcular ahorro mensual
-            const ahorroAnual = calcularAhorroMensual(inversionMensual, apyAnual);
+            // Validar entradas
+            const errores = validarEntradas(inversionMensual, apyAnual, tasaCDT, retencionPorcentaje, numeroAnios);
+            if (!mostrarErrores(errores)) {
+                return; // Si hay errores, no continuar
+            }
             
-            // Calcular proyección CDT
-            const totalFinal = calcularProyeccionCDT(ahorroAnual, tasaCDT, retencionPorcentaje, numeroAnios);
+            mostrarLoading(true);
             
-            // Actualizar resumen
-            actualizarResumen(inversionMensual, ahorroAnual, tasaCDT, retencionPorcentaje, numeroAnios, totalFinal);
+            // Simular cálculo asíncrono para mostrar loading
+            setTimeout(() => {
+                try {
+                    // Calcular ahorro mensual
+                    const ahorroAnual = calcularAhorroMensual(inversionMensual, apyAnual);
+                    
+                    // Calcular proyección CDT
+                    const { totalFinal, datosAnuales } = calcularProyeccionCDT(ahorroAnual, tasaCDT, retencionPorcentaje, numeroAnios, inversionMensual);
+                    
+                    // Actualizar resumen
+                    actualizarResumen(inversionMensual, ahorroAnual, tasaCDT, retencionPorcentaje, numeroAnios, totalFinal);
+                    
+                    // Actualizar gráfico
+                    actualizarGrafico(datosAnuales);
+                    
+                    // Guardar datos para exportación
+                    currentScenarioData = {
+                        inversionMensual,
+                        apyAnual,
+                        tasaCDT,
+                        retencionPorcentaje,
+                        numeroAnios,
+                        totalFinal,
+                        ahorroAnual
+                    };
+                    
+                } catch (error) {
+                    console.error('Error en cálculos:', error);
+                    mostrarErrores(['Error en los cálculos. Por favor, verifica los datos ingresados.']);
+                } finally {
+                    mostrarLoading(false);
+                }
+            }, 100);
         }
+        
+        // Versión con debounce
+        const calcularDebounced = debounce(calcular, 300);
         
         function calcularAhorroMensual(inversionMensual, apyAnual) {
             // Convertir APY anual a tasa mensual compuesta
@@ -742,7 +985,7 @@
             return acumulado;
         }
         
-        function calcularProyeccionCDT(ahorroAnual, tasaCDT, retencionPorcentaje, numeroAnios) {
+        function calcularProyeccionCDT(ahorroAnual, tasaCDT, retencionPorcentaje, numeroAnios, inversionMensual) {
             const tasaCDTDecimal = tasaCDT / 100;
             const retencionDecimal = retencionPorcentaje / 100;
             
@@ -750,19 +993,40 @@
             tbody.innerHTML = '';
             
             let cdtAnterior = 0;
+            let capitalPuroInvertido = 0; // Solo inversiones mensuales sin ningún rendimiento
+            let capitalConAPY = 0; // Capital + rendimientos APY acumulados
+            const datosAnuales = []; // Para el gráfico
             
             for (let año = 1; año <= numeroAnios; año++) {
-                // Capital a invertir = CDT anterior + ahorro anual
+                // Capital a invertir = CDT anterior + ahorro anual (que ya incluye rendimientos APY)
                 const capitalAInvertir = cdtAnterior + ahorroAnual;
                 
-                // Calcular rendimiento CDT
+                // Actualizar contadores para el gráfico
+                capitalPuroInvertido += (inversionMensual * 12); // Solo las inversiones sin rendimientos
+                capitalConAPY += ahorroAnual; // Inversiones + rendimientos APY acumulados
+                
+                // Calcular rendimiento CDT sobre el capital total
                 const rendimientoCDT = capitalAInvertir * tasaCDTDecimal;
                 
                 // Calcular retención
                 const retencionMonto = rendimientoCDT * retencionDecimal;
                 
-                // CDT final = capital + rendimiento - retención
+                // CDT final = capital + rendimiento CDT - retención
                 const cdtFinal = capitalAInvertir + rendimientoCDT - retencionMonto;
+                
+                // Calcular componentes para el gráfico
+                const rendimientosAPY = capitalConAPY - capitalPuroInvertido; // Solo rendimientos APY
+                const rendimientosCDTNetos = cdtFinal - capitalConAPY; // Solo rendimientos CDT netos
+                
+                // Guardar datos para el gráfico
+                datosAnuales.push({
+                    año: año,
+                    valor: cdtFinal, // Valor total final
+                    capitalPuro: capitalPuroInvertido, // Solo inversiones mensuales
+                    capitalConAPY: capitalConAPY, // Capital + rendimientos APY
+                    rendimientosAPY: rendimientosAPY, // Solo rendimientos APY
+                    rendimientosCDT: rendimientosCDTNetos // Solo rendimientos CDT
+                });
                 
                 // Crear fila
                 const fila = tbody.insertRow();
@@ -778,7 +1042,7 @@
                 cdtAnterior = cdtFinal;
             }
             
-            return cdtAnterior;
+            return { totalFinal: cdtAnterior, datosAnuales };
         }
         
         function actualizarResumen(inversionMensual, ahorroAnual, tasaCDT, retencionPorcentaje, numeroAnios, totalFinal) {
@@ -793,14 +1057,223 @@
             document.getElementById('resumenTotalFinal').innerHTML = '<strong>' + formatearNumero(totalFinal) + '</strong>';
         }
 
+        // Función para actualizar gráfico
+        function actualizarGrafico(datosAnuales) {
+            const ctx = document.getElementById('chartCanvas').getContext('2d');
+            
+            if (chart) {
+                chart.destroy();
+            }
+            
+            if (datosAnuales.length === 0) {
+                return;
+            }
+            
+            const labels = datosAnuales.map(d => `Año ${d.año}`);
+            const ahorroTotal = datosAnuales.map(d => d.valor); // Valor total final
+            const capitalInvertido = datosAnuales.map(d => d.capitalPuro); // Solo inversiones
+            const rendimientosTotales = datosAnuales.map(d => d.valor - d.capitalPuro); // APY + CDT
+            
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Ahorro Total',
+                        data: ahorroTotal,
+                        borderColor: '#8b5cf6', // Morado
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        tension: 0.4,
+                        fill: false,
+                        borderWidth: 4
+                    }, {
+                        label: 'Capital Invertido',
+                        data: capitalInvertido,
+                        borderColor: '#10b981', // Verde
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: false,
+                        borderWidth: 3
+                    }, {
+                        label: 'Total Rendimientos (APY + CDT)',
+                        data: rendimientosTotales,
+                        borderColor: '#f59e0b', // Amarillo
+                        backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Proyección de Crecimiento: Capital vs Rendimientos'
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.parsed.y;
+                                    const dataIndex = context.dataIndex;
+                                    let extra = '';
+                                    
+                                    if (context.datasetIndex === 2 && ahorroTotal[dataIndex] > 0) {
+                                        // Para la línea de rendimientos, mostrar porcentaje del total
+                                        const percentage = ((value / ahorroTotal[dataIndex]) * 100).toFixed(1);
+                                        extra = ` (${percentage}% del total)`;
+                                    } else if (context.datasetIndex === 1 && ahorroTotal[dataIndex] > 0) {
+                                        // Para capital invertido, mostrar porcentaje del total
+                                        const percentage = ((value / ahorroTotal[dataIndex]) * 100).toFixed(1);
+                                        extra = ` (${percentage}% del total)`;
+                                    }
+                                    
+                                    return context.dataset.label + ': $' + formatearNumero(value) + extra;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + formatearNumero(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Exportar a PDF
+        function exportarPDF() {
+            if (!currentScenarioData) {
+                alert('Por favor, realiza primero una simulación');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+            
+            // Título
+            pdf.setFontSize(20);
+            pdf.text('Simulador Profesional de Inversiones', 20, 30);
+            
+            pdf.setFontSize(14);
+            pdf.text('Reporte de Simulación CDT', 20, 45);
+            
+            // Parámetros
+            pdf.setFontSize(12);
+            let y = 65;
+            pdf.text('PARÁMETROS:', 20, y);
+            y += 10;
+            pdf.text(`Inversión Mensual: $${formatearNumero(currentScenarioData.inversionMensual)}`, 20, y);
+            y += 8;
+            pdf.text(`APY: ${currentScenarioData.apyAnual}%`, 20, y);
+            y += 8;
+            pdf.text(`Tasa CDT: ${currentScenarioData.tasaCDT}%`, 20, y);
+            y += 8;
+            pdf.text(`Retención: ${currentScenarioData.retencionPorcentaje}%`, 20, y);
+            y += 8;
+            pdf.text(`Años: ${currentScenarioData.numeroAnios}`, 20, y);
+            
+            // Resultados
+            y += 20;
+            pdf.text('RESULTADOS:', 20, y);
+            y += 10;
+            pdf.text(`Ahorro Anual: $${formatearNumero(currentScenarioData.ahorroAnual)}`, 20, y);
+            y += 8;
+            pdf.text(`Total Final: $${formatearNumero(currentScenarioData.totalFinal)}`, 20, y);
+            y += 8;
+            pdf.text(`Semanas Cotizadas: ${currentScenarioData.numeroAnios * 52}`, 20, y);
+            
+            // Fecha
+            y += 20;
+            pdf.text(`Generado el: ${new Date().toLocaleDateString('es-CO')}`, 20, y);
+            
+            pdf.save('simulacion-cdt.pdf');
+        }
+        
+        // Exportar a Excel
+        function exportarExcel() {
+            if (!currentScenarioData) {
+                alert('Por favor, realiza primero una simulación');
+                return;
+            }
+            
+            const wb = XLSX.utils.book_new();
+            
+            // Hoja de parámetros
+            const parametros = [
+                ['Parámetro', 'Valor'],
+                ['Inversión Mensual', currentScenarioData.inversionMensual],
+                ['APY %', currentScenarioData.apyAnual],
+                ['Tasa CDT %', currentScenarioData.tasaCDT],
+                ['Retención %', currentScenarioData.retencionPorcentaje],
+                ['Años', currentScenarioData.numeroAnios],
+                ['', ''],
+                ['Resultados', ''],
+                ['Ahorro Anual', currentScenarioData.ahorroAnual],
+                ['Total Final', currentScenarioData.totalFinal],
+                ['Semanas Cotizadas', currentScenarioData.numeroAnios * 52]
+            ];
+            
+            const wsParametros = XLSX.utils.aoa_to_sheet(parametros);
+            XLSX.utils.book_append_sheet(wb, wsParametros, 'Parámetros');
+            
+            // Obtener datos de las tablas
+            const tablaAhorro = document.getElementById('tablaAhorroMensual');
+            const tablaCDT = document.getElementById('tablaCDTAnual');
+            
+            if (tablaAhorro.rows.length > 0) {
+                const wsAhorro = XLSX.utils.table_to_sheet(tablaAhorro.closest('table'));
+                XLSX.utils.book_append_sheet(wb, wsAhorro, 'Ahorro Mensual');
+            }
+            
+            if (tablaCDT.rows.length > 0) {
+                const wsCDT = XLSX.utils.table_to_sheet(tablaCDT.closest('table'));
+                XLSX.utils.book_append_sheet(wb, wsCDT, 'Proyección CDT');
+            }
+            
+            XLSX.writeFile(wb, 'simulacion-cdt.xlsx');
+        }
+        
+        
         function limpiarCampos() {
             document.getElementById('inversionMensual').value = '';
             document.getElementById('apyMensual').value = '';
             document.getElementById('tasaCDT').value = '';
             document.getElementById('retencion').value = '';
             document.getElementById('numeroAnios').value = '';
+            
+            // Limpiar errores
+            document.getElementById('errorContainer').classList.remove('show');
+            
+            // Limpiar gráfico
+            if (chart) {
+                chart.destroy();
+                chart = null;
+            }
+            
             calcular(); // Recalcular con valores vacíos
         }
+        
+        // Navegación por teclado
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+                const inputs = Array.from(document.querySelectorAll('input[type="number"]'));
+                const currentIndex = inputs.indexOf(e.target);
+                if (currentIndex < inputs.length - 1) {
+                    inputs[currentIndex + 1].focus();
+                }
+            }
+        });
         
         // Ejecutar cálculo inicial
         calcular();
